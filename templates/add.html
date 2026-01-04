@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Graph
+{% endblock %}
+
+{% block main %}
+    <form method="post" action="/add">
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <input class="input" type="text" placeholder="Habit" name="habit_name">
+            </div>
+
+            <div class="control">
+                <button class="button is-danger" type="submit">Add</button>
+            </div>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+            <p class="help is-danger" id="error-message" style="display: none;"></p>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            const formData = new FormData(this)
+            const response = await fetch("/add", {
+                method: "POST",
+                body: formData
+
+            })
+        // Handle response
+            const result = await response.json()
+            const errorMessage = document.getElementById("error-message");
+
+            if (result.success) {
+                window.location.href = "/";
+            } else {
+            // Display error message
+                errorMessage.textContent = result.error;
+                errorMessage.style.display = "block";
+            }
+        })
+    </script>
+{% endblock %}
