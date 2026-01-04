@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post" class="box">
+        <!-- Username Field -->
+        <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left">
+                <input class="input is-small" type="text" placeholder="Username" name="username">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left">
+                <input class="input is-small" type="password" placeholder="Password" name="password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="field">
+            <p id="error-message" class="help is-danger" style="display: none;"></p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="field">
+            <div class="control">
+                <button class="button is-danger is-fullwidth">Log in</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Collect form data
+            const formData = new FormData(this);
+            const response = await fetch("/login", {
+                method: "POST",
+                body: formData
+            });
+
+            // Handle response
+            const result = await response.json();
+            const errorMessage = document.getElementById("error-message");
+
+            if (result.success) {
+                // Redirect on successful login
+                alert(result.message); // Success message
+                window.location.href = "/"; // Redirect to index.html
+            } else {
+                // Display error message
+                errorMessage.textContent = result.error;
+                errorMessage.style.display = "block";
+            }
+        });
+    </script>
+{% endblock %}

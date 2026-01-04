@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+
+{% block main %}
+    <form id="habit-form" method="post" action="/update">
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <label class="label">Habit</label>
+                <div class="select">
+                    <select name="habit_name" required>
+                        <option value="" disabled selected>Select Habit</option>
+                        {% for list in habit %}
+                            <option value="{{ list.name }}">{{ list.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Duration</label>
+                <div class="control">
+                    <input class="input" type="number" placeholder="Duration (minutes)" name="duration" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Timestamp</label>
+                <div class="control">
+                    <input class="input" type="date" placeholder="Timestamp" name="timestamp" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <button class="button is-danger" type="submit">Update</button>
+            </div>
+        </div>
+
+        <div class="field is-grouped is-grouped-centered">
+            <p class="help is-danger" id="error-message" style="display: none;"></p>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector("#habit-form").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent form submission
+
+        // Collect form data
+            const formData = new FormData(this);
+
+        // Log form data to inspect the values
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value); // Log each form field
+            }
+
+            try {
+                const response = await fetch("/update", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json(); // Parse the JSON response
+                const errorMessage = document.getElementById("error-message");
+
+            // Check if the response indicates success or failure
+                if (result.success) {
+                    alert(result.message); // Success message
+                    window.location.href = "/"; // Redirect to homepage
+                } else {
+                // Display the error message
+                    errorMessage.textContent = result.error || "An error occurred"; // Fallback if error is undefined
+                    errorMessage.style.display = "block"; // Make the error message visible
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorMessage = document.getElementById("error-message");
+                errorMessage.textContent = "An unexpected error occurred.";
+                errorMessage.style.display = "block"; // Show the error message
+            }
+        });
+    </script>
+
+{% endblock %}

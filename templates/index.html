@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <div class="select">
+                    <select name="habit_name">
+                        <option value="" disabled selected>Select Habit</option>
+                        {% for list in habit %}
+                            <option value="{{ list.name }}">{{ list.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-danger">View</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

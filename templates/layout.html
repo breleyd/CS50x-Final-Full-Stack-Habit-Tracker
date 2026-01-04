@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>HabitFlow</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <style>
+            /* Optional: Additional custom styles for image */
+            .graph-container img {
+                width: 100%;
+                /* Make the image responsive */
+                max-width: 80%;
+                /* Limit the max width */
+                height: auto;
+                /* Maintain aspect ratio */
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <span class="is-size-4 has-text-weight-bold has-text-danger">HabitFlow</span>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            {% if session["user_id"] %}
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="/update">
+                            Update
+                        </a>
+
+                        <a class="navbar-item" href="/add">
+                            Add
+                        </a>
+
+                        <a class="navbar-item" href="/remove">
+                            Remove
+                        </a>
+
+                    </div>
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="button is-danger" href="/logout">
+                                    <strong>Log out</strong>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-danger" href="/register">
+                                <strong>Register</strong>
+                            </a>
+                            <a class="button is-light" href="/login">
+                                Log in
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block main %}{% endblock %}
+    </div>
+</body>
+
+</html>

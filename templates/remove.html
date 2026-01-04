@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Remove
+{% endblock %}
+
+{% block main %}
+    <form method="post" action="/remove">
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <div class="select">
+                    <select name="habit_name">
+                        <option value="" disabled selected>Select Habit</option>
+                        {% for list in habit %}
+                            <option value="{{ list.name }}">{{ list.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-danger">Remove</button>
+            </div>
+        </div>
+
+        <div class="field is-grouped is-grouped-centered">
+            <p class="help is-danger" id="error-message" style="display: none;"></p>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            const formData = new FormData(this)
+            const response = await fetch("/remove", {
+                method: "POST",
+                body: formData
+
+            })
+        // Handle response
+            const result = await response.json()
+            const errorMessage = document.getElementById("error-message");
+
+            if (result.success) {
+                window.location.href = "/";
+            } else {
+            // Display error message
+                errorMessage.textContent = result.error;
+                errorMessage.style.display = "block";
+            }
+        })
+    </script>
+{% endblock %}

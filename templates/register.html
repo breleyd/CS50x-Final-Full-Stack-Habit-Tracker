@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form method="post" class="box">
+        <!-- Username Field -->
+        <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left">
+                <input class="input is-small" type="text" placeholder="Username" name="username">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left">
+                <input class="input is-small" type="password" placeholder="Password" name="password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="field">
+            <label class="label">Confirm Password</label>
+            <div class="control has-icons-left">
+                <input class="input is-small" type="password" placeholder="Confirm Password" name="confirmation">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- General Error Message -->
+        <div class="field">
+            <p class="help is-danger" id="error-message" style="display: none;"></p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="field">
+            <div class="control">
+                <button class="button is-danger is-fullwidth">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Collect form data
+            const formData = new FormData(this);
+
+            try {
+                // Send POST request to the server
+                const response = await fetch("/register", {
+                    method: "POST",
+                    body: formData
+                });
+
+                // Parse the JSON response
+                const result = await response.json();
+                const errorMessage = document.getElementById("error-message");
+
+                // Check if the registration was successful
+                if (result.success) {
+                    // Show success message (optional)
+                    alert(result.message); // Success message
+                    window.location.href = "/login"; // Redirect to login page
+                } else {
+                    // Display errors (single or multiple)
+                    if (result.errors) {
+                        errorMessage.innerHTML = result.errors.join("<br>");
+                        errorMessage.style.display = "block";
+                    } else {
+                        errorMessage.textContent = result.error;
+                        errorMessage.style.display = "block";
+                    }
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+                alert("Something went wrong. Please try again.");
+            }
+        });
+    </script>
+{% endblock %}
+

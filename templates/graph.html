@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Graph
+{% endblock %}
+
+{% block main %}
+    <section class="section">
+        <div class="container has-text-centered">
+            {% if error %}
+                <p class="help is-danger">{{ error }}</p>
+            {% else %}
+                <h1 class="title">Habit Graph</h1>
+                <figure class="graph-container">
+            <!-- Centered graph image -->
+                    <img src="data:image/png;base64,{{ plot_img }}" alt="Habit Graph">
+                </figure>
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}
