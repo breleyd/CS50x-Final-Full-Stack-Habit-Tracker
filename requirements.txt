@@ -1,0 +1,5 @@
+Flask
+CS50
+matplotlib
+werkzeug
+flask-session
